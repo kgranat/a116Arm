@@ -76,10 +76,10 @@ enum {
 #define GRIP_MAX     512
 
 // Define some lengths and offsets used by the arm
-#define BaseHeight          110L   // (L0)
+#define BaseHeight          165L   // (L0)
 #define ShoulderLength      230L   // (L1)
 #define ElbowLength         195L   //(L2)Length of the Arm from Elbow Joint to Wrist Joint
-#define WristLength         137L   // (L3)Wrist length including Wrist rotate
+#define WristLength         50L   // (L3)Wrist length including Wrist rotate
 
 #endif
 

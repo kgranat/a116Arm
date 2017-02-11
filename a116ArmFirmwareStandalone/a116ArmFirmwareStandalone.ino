@@ -71,6 +71,13 @@
 #include <Servo.h>  
 
 
+#define buzzerPin   8
+#define songLength  18
+#define tempo       150
+
+char notes[] = "cdfda ag cdfdg gf ";                  // This is the note you want to play
+int  beats[] = {1,1,1,1,1,1,4,4,2,1,1,1,1,1,1,4,4,2}; // How long to play the note in array
+
 Servo myservo;  // create servo object to control a servo
 WiiClassy classy = WiiClassy(); //start an instance of the WiiClassy Library
 
@@ -93,7 +100,12 @@ const int DEADBANDHIGH = 34;  //increase this value if drift occurs, decrease it
 
 const int BUZZER_PIN = 8;
 
+int servo5Value = 90; //servo position
 
+
+Servo servo5;   //servo object
+
+int spdgrip = 5; 
 
 
 int mod[5];
@@ -144,11 +156,16 @@ int delayTime = 5; //milliseocnds to delay in each processAnalog function - redu
 //====================================================================================================
 void setup() {
 
+     pinMode(buzzerPin, OUTPUT);   //don't forget to put the pin as an ouput
+
+
   delay(100);
   classy.init();  //start classy library
   delay(100);
   classy.update();  //read data from the classic controller
 
+
+  servo5.attach(6); //attach the servo on pin 10
 
   //initialize the Serial Port
   Serial.begin(115200);  
@@ -187,7 +204,6 @@ delay(5000);
 void loop() 
 {
   
-
 
    updateControls();//update the controls from the wii controller
 
@@ -259,6 +275,9 @@ void updateControls()
     }
     
   
+  if (classy.aPressed) {
+    rickRoll();
+    }
 
 
 
@@ -302,16 +321,17 @@ void updateControls()
    {
     
      // joint[GRIPPER] = 0;
-
-     sGrip = 176;
+   servo5Value = servo5Value + spdgrip;
+     //sGrip = 176;
    }
 
    
    if(classy.rzPressed)
    {
      // joint[GRIPPER] = 40;
-
-     sGrip = 176;
+ 
+  servo5Value = servo5Value - spdgrip;
+     //sGrip = 176;
 
    }
     
@@ -339,7 +359,9 @@ void updateControls()
    }
 
 
+servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
 
+  servo5.write(servo5Value);
 
 
     int interpolate = 10;
@@ -488,4 +510,33 @@ void MSound(byte cNotes, ...)
 };
 #endif
 
+
+
+void rickRoll(){                    // this function is what actually plays the song
+  int i, duration;
+  for (i = 0; i < songLength; i++){ // step through the song arrays
+    duration = beats[i] * tempo;    // length of note/rest in ms
+    if (notes[i] == ' '){
+      delay(duration);              // then pause for a moment
+    }else{
+      tone(buzzerPin, frequency(notes[i]), duration);
+      delay(duration);              // wait for tone to finish
+    }
+    delay(tempo/10);                // brief pause between notes
+  }
+}
+//-------------frequency-----------
+int frequency(char note){           // This function is called by rickRoll()
+  int r;
+  const int numNotes = 8;           // number of notes we're storing
+  char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };    // letter notes
+  int frequencies[] = {262, 294, 330, 349, 392, 440, 494, 523}; // frequencies
+  for (r = 0; r < numNotes; r++){
+    if (names[r] == note){
+      return(frequencies[r]);       // Yes! Return the frequency
+    }
+  }
+  return(0);
+}
+//============================= you need these functions =======================================
 
