@@ -27,7 +27,7 @@ int wristRot = 512;
 int gripper = 512;
 
 int servoId[5] = {1,2,4,5,6};
-int joint[5] = {512, 512, 750, 512, 512};
+int joint[5] = {512, 512, 512, 512, 450};
 int mod[5];
 
 const int BUZZER_PIN = 4;
@@ -58,8 +58,8 @@ void setup() {
   bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(2,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.setNextPose(3,512);//prepare the PAN servo to the centered position, pan/2048
-  bioloid.setNextPose(4,750);//preprare the tilt servo to the centered position, tilt/2048
-  bioloid.setNextPose(5,512);//prepare the PAN servo to the centered position, pan/2048
+  bioloid.setNextPose(4,512);//preprare the tilt servo to the centered position, tilt/2048
+  bioloid.setNextPose(5,312);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(6,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
   while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
@@ -159,62 +159,8 @@ void setup() {
 int mapChange;
 void loop() {
 
-  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
-  val = map(val, 0, 1023, 0, 40);     // scale it to use it with the servo (value between 0 and 180)
-  myservo.write(val);                  // sets the servo position according to the scaled value
   
 
-
-  
-  for(int i = 0; i < 5; i++)
-  {
-    int joyVal =   analogRead(i); //read joystick value
-  //check if value is outiside deadband
-  if(joyVal > 612 || joyVal < 412)
-  {
-    mod[i] = map(joyVal, 0, 1023, -10, 10);
-    joint[i] = joint[i] + mod[i];
-    
-  }
-    
-  }
-
-
-  delay(20);
-
-    joint[1] = min(joint[1], 790);
-    joint[1] = max(joint[1],243);
-
-    joint[2] = min(joint[2], 790);
-    joint[2] = max(joint[2],243);
-
-    
-    joint[3] = min(joint[3], 790);
-    joint[3] = max(joint[3],243);
-
-    
-   // joint[4] = min(joint[4], 790);
-    //joint[4] = max(joint[4],243);
-
-    
-
-    SetPositionI_JOG(1, 0, joint[0]);
-    
-    
-    SetPositionI_JOG(2, 0, joint[1]);
-    SetPositionI_JOG(3, 0, 1023-joint[1]);
-
-    
-    SetPositionI_JOG(4, 0, joint[2]);
-    SetPositionI_JOG(5, 0, joint[3]);
-    SetPositionI_JOG(6, 0, joint[4]);
-    
-    delay(100);
-   Serial.print("2: ");
-   Serial.print(ReadPosition(2));
-    delay(100);
-   Serial.print(" 4: ");
-   Serial.println(ReadPosition(4));
 
 
 }
