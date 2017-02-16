@@ -51,7 +51,10 @@ void leftStack()
 //    A1_16_SetSpeed(5,1,20);
 //    A1_16_SetSpeed(6,1,20);
 
+  Serial.println("start IK sequence");
     
-    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 2000 , 2000, playState);
+    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 1000 , 0, playState);
+    
+  Serial.println("end IK sequence");
 }
 

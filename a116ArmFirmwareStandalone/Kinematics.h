@@ -73,7 +73,7 @@ int radToMXServo(float rads){
 //===================================================================================================
 uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
 {
-  Serial.println("Start IK");
+ // Serial.println("Start IK");
   int t;
   int sol0;
   uint8_t bRet = IKS_SUCCESS;  // assume success
@@ -127,7 +127,7 @@ uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
 #endif  
 
 
-  Serial.println("middle IK");
+ // Serial.println("middle IK");
 #if ARMTYPE == PINCHER 
   // Lets calculate the actual servo values.
   if (fCartesian) {
@@ -189,7 +189,7 @@ uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
     }
     bRet = IKS_WARNING;  
   }
-  Serial.println("End IK");
+ // Serial.println("End IK");
 
   return bRet;
 
@@ -208,22 +208,22 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
 
 
 
-
-
-
-        Serial.print("MOVE ARM SBASE");
-        Serial.print(" ");
-        Serial.println(sBase);
-        Serial.print(" ");
-        Serial.println(g_sIKY);
-        Serial.print(" ");
-        Serial.println(g_sIKZ);
-        Serial.print(" ");
-        Serial.println(g_sIKGA);
-        Serial.print(" ");
-        Serial.println(sWristRot);
-        Serial.print(" ");
-        Serial.println(sGrip);
+//
+//
+//
+//        Serial.print("MOVE ARM SBASE");
+//        Serial.print(" ");
+//        Serial.println(sBase);
+//        Serial.print(" ");
+//        Serial.println(g_sIKY);
+//        Serial.print(" ");
+//        Serial.println(g_sIKZ);
+//        Serial.print(" ");
+//        Serial.println(g_sIKGA);
+//        Serial.print(" ");
+//        Serial.println(sWristRot);
+//        Serial.print(" ");
+//        Serial.println(sGrip);
 
   int sMaxDelta;
   int sDelta;
@@ -326,6 +326,124 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     SetPositionI_JOG(5, 0, sWristRot);
 
     
+
+
+
+}
+
+
+//===================================================================================================
+// MoveArmTo
+//===================================================================================================
+void MoveArmToPose(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, int sGrip, int wTime, boolean fWait) {
+
+
+   bioloid.readPose();
+
+  int sMaxDelta;
+  int sDelta;
+
+  // First make sure servos are not free...
+  if (g_fServosFree) {
+    g_fServosFree = false;
+
+    for(uint8_t i=1; i <= CNT_SERVOS; i++) {
+     // TorqueOn(i);
+    }  
+  }
+
+
+  // Make sure the previous movement completed.
+  // Need to do it before setNextPos calls as this
+  // is used in the interpolating code...
+  // while (bioloid.interpolating > 0) {
+  //   bioloid.interpolateStep();
+  //   delay(3);
+  // }
+
+  // Also lets limit how fast the servos will move as to not get whiplash.
+  bioloid.setNextPose(SID_BASE, sBase);  
+
+#if ARMTYPE == REACTOR  //double joints on reactor are handled differently
+  sMaxDelta = abs(bioloid.getCurPose(SID_RSHOULDER) - sShoulder);
+  bioloid.setNextPose(SID_RSHOULDER, sShoulder);
+  bioloid.setNextPose(SID_LSHOULDER, 1024-sShoulder);
+
+  sDelta = abs(bioloid.getCurPose(SID_RELBOW) - sElbow);
+  if (sDelta > sMaxDelta)
+    sMaxDelta = sDelta;
+  bioloid.setNextPose(SID_RELBOW, sElbow);
+  //bioloid.setNextPose(SID_LELBOW, 1024-sElbow);
+  
+#else    //single joint config
+  sMaxDelta = abs(bioloid.getCurPose(SID_SHOULDER) - sShoulder);
+  bioloid.setNextPose(SID_SHOULDER, sShoulder);
+
+  sDelta = abs(bioloid.getCurPose(SID_ELBOW) - sElbow);
+  if (sDelta > sMaxDelta)
+    sMaxDelta = sDelta;
+  bioloid.setNextPose(SID_ELBOW, 1023-sElbow);
+#endif
+
+  sDelta = abs(bioloid.getCurPose(SID_WRIST) - sWrist);
+  if (sDelta > sMaxDelta)
+    sMaxDelta = sDelta;
+  bioloid.setNextPose(SID_WRIST, 1023-sWrist);
+
+
+//#ifdef OPT_WRISTROT
+  bioloid.setNextPose(SID_WRISTROT, sWristRot); 
+//#endif  
+  bioloid.setNextPose(SID_GRIP, sGrip);
+
+
+  // Save away the current positions...
+  g_sBase = sBase;
+  g_sShoulder = sShoulder;
+  g_sElbow = sElbow;
+  g_sWrist = sWrist;
+  g_sWristRot = sWristRot;
+  g_sGrip = sGrip;
+
+  // Now start the move - But first make sure we don't move too fast.  
+  if (((long)sMaxDelta*wTime/1000L) > MAX_SERVO_DELTA_PERSEC) {
+    wTime = ((long)sMaxDelta*1000L)/ MAX_SERVO_DELTA_PERSEC;
+  }
+
+
+   bioloid.interpolateSetup(wTime);
+
+
+   bioloid.interpolateStep();
+
+   // And if asked to, wait for the previous move to complete...
+   if (fWait) {
+     while (bioloid.interpolating > 0) {
+       bioloid.interpolateStep();
+       delay(3);
+     }
+   }
+
+//
+//
+
+
+// int tempInverse = (-0.0615*sShoulder)+1049.2;
+//
+//
+// 
+//    SetPositionI_JOG(1, wTime, sBase);
+//    
+//    
+//    SetPositionI_JOG(2, wTime, tempInverse- sShoulder);
+//    SetPositionI_JOG(3, wTime, sShoulder);
+//
+//    
+//    SetPositionI_JOG(4, wTime, 1023-sElbow);
+//    SetPositionI_JOG(6, wTime, 1023-sWrist);
+//    SetPositionI_JOG(5, wTime, sWristRot);
+//
+//    
 
 
 

@@ -547,7 +547,7 @@ void IKSequencingControl(float X, float Y, float Z, float GA, float WR, int grip
     sGrip = grip;
     
     //move arm to position
-    MoveArmTo(sBase, sShoulder, sElbow, sWrist, sWristRot, sGrip, interpolate, true);  
+    MoveArmToPose(sBase, sShoulder, sElbow, sWrist, sWristRot, sGrip, interpolate, true);  
     
     //wait for pause milliseconds
     delay(pause);
