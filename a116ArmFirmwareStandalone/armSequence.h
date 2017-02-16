@@ -36,3 +36,22 @@ void playSequence()
  //PutArmToSleep();
     
 }
+
+
+
+void leftStack()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+//    A1_16_SetSpeed(1,1,20);
+//    A1_16_SetSpeed(2,1,20);
+//    A1_16_SetSpeed(3,1,20);
+//    A1_16_SetSpeed(4,1,20);
+//    A1_16_SetSpeed(5,1,20);
+//    A1_16_SetSpeed(6,1,20);
+
+    
+    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 2000 , 2000, playState);
+}
+

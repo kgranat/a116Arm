@@ -204,15 +204,22 @@ uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
 void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, int sGrip, int wTime, boolean fWait) {
 
 
+
+
+
+
+
+
+
         Serial.print("MOVE ARM SBASE");
         Serial.print(" ");
         Serial.println(sBase);
         Serial.print(" ");
-        Serial.println(sShoulder);
+        Serial.println(g_sIKY);
         Serial.print(" ");
-        Serial.println(sElbow);
+        Serial.println(g_sIKZ);
         Serial.print(" ");
-        Serial.println(sWrist);
+        Serial.println(g_sIKGA);
         Serial.print(" ");
         Serial.println(sWristRot);
         Serial.print(" ");
@@ -282,31 +289,36 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
   g_sWrist = sWrist;
   g_sWristRot = sWristRot;
   g_sGrip = sGrip;
-
-  // Now start the move - But first make sure we don't move too fast.  
+//
+//  // Now start the move - But first make sure we don't move too fast.  
 //  if (((long)sMaxDelta*wTime/1000L) > MAX_SERVO_DELTA_PERSEC) {
 //    wTime = ((long)sMaxDelta*1000L)/ MAX_SERVO_DELTA_PERSEC;
 //  }
+//
+//   bioloid.interpolateSetup(wTime);
+//
+//
+//   bioloid.interpolateStep();
+//
+//   // And if asked to, wait for the previous move to complete...
+//   if (fWait) {
+//     while (bioloid.interpolating > 0) {
+//       bioloid.interpolateStep();
+//       delay(3);
+//     }
+//   }
 
-  // bioloid.interpolateSetup(wTime);
+//
 
-  // // Do at least the first movement
-  // bioloid.interpolateStep();
-
-  // // And if asked to, wait for the previous move to complete...
-  // if (fWait) {
-  //   while (bioloid.interpolating > 0) {
-  //     bioloid.interpolateStep();
-  //     delay(3);
-  //   }
-  // }
+ int tempInverse = (-0.0615*sShoulder)+1049.2;
 
 
+ 
     SetPositionI_JOG(1, 0, sBase);
     
     
-    SetPositionI_JOG(2, 0, sShoulder);
-    SetPositionI_JOG(3, 0, 1023-sShoulder);
+    SetPositionI_JOG(2, 0, tempInverse- sShoulder);
+    SetPositionI_JOG(3, 0, sShoulder);
 
     
     SetPositionI_JOG(4, 0, 1023-sElbow);

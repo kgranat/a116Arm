@@ -176,11 +176,11 @@ void setup() {
   A1_16_Ini(115200);//initiate a1-16 library
   bioloid.setup(115200, 6);//intiate bioloid interpolation 
 
-  // Next initialize the Bioloid
-  bioloid.poseSize = CNT_SERVOS;
-
-  // Read in the current positions...
-  bioloid.readPose();
+//  // Next initialize the Bioloid
+//  bioloid.poseSize = CNT_SERVOS;
+//
+//  // Read in the current positions...
+//  bioloid.readPose();
   delay(100);
   
   // Start off to put arm to sleep...
@@ -188,8 +188,118 @@ void setup() {
   
   //startup sound
   MSound(3, 60, 2000, 80, 2250, 100, 2500);
+//
+//while(1)
+//{
+//
+//   for(int i = 1; i< 7; i++)
+//   {
+//    
+//   Serial.print(i);
+//   Serial.print(":");
+//   int test = A1_16_ReadData(i,CMD_RAM_READ,RAM_Joint_Position,2);
+//   Serial.println(test);
+//   delay(10);
+//   }
+//    delay(1000);
+////
+////   delay(1000);
+////
+////
+////    int tempi = (-0.0615*900)+1049.2;
+////    SetPositionI_JOG(2, 0, tempi - 900);
+////    SetPositionI_JOG(3, 0, 900);
+////  delay(10000);
+////
+////
+////    
+////
+////
+////    
+////  for(int i = 0; i < 1023; i ++)
+////{
+////    int tempi = (-0.0615*i)+1049.2;
+////  
+////    SetPositionI_JOG(2, 0, i);
+////    SetPositionI_JOG(3, 0, tempi - i);
+////    delay(25);
+////}
+////
+////    
+////  for(int i = 1023; i > 0; i --)
+////{
+////  
+////    int tempi = (-0.0615*i)+1049.2;
+////    SetPositionI_JOG(2, 0,  i);
+////    SetPositionI_JOG(3, 0, tempi - i);
+////    delay(25);
+////}
+//
+//    
+//}
 
 
+//while(1)
+//{
+//  bioloid.poseSize = 1;//2 servos, so the pose size will be 2
+//  bioloid.readPose();//find where the servos are currently
+//  bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
+//
+//  bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+//  while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
+//  {
+//    bioloid.interpolateStep();//move servos 1 'step
+//    delay(3);
+//  }
+//  
+//
+//  bioloid.poseSize = 1;//2 servos, so the pose size will be 2
+//  bioloid.readPose();//find where the servos are currently
+//  bioloid.setNextPose(1,300);//prepare the PAN servo to the centered position, pan/2048
+//
+//  bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+//  while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
+//  {
+//    bioloid.interpolateStep();//move servos 1 'step
+//    delay(3);
+//  }
+//
+//  bioloid.poseSize = 1;//2 servos, so the pose size will be 2
+//  bioloid.readPose();//find where the servos are currently
+//  bioloid.setNextPose(1,800);//prepare the PAN servo to the centered position, pan/2048
+//
+//  bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+//  while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
+//  {
+//    bioloid.interpolateStep();//move servos 1 'step
+//    delay(3);
+//  }
+//  
+//
+//}
+
+
+
+
+
+  bioloid.poseSize = 6;//2 servos, so the pose size will be 2
+  bioloid.readPose();//find where the servos are currently
+  bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
+  bioloid.setNextPose(2,512);//preprare the tilt servo to the centered position, tilt/2048
+  bioloid.setNextPose(3,512);//prepare the PAN servo to the centered position, pan/2048
+  bioloid.setNextPose(4,512);//preprare the tilt servo to the centered position, tilt/2048
+  bioloid.setNextPose(5,512);//prepare the PAN servo to the centered position, pan/2048
+  bioloid.setNextPose(6,512);//preprare the tilt servo to the centered position, tilt/2048
+  bioloid.interpolateSetup(2500);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+  while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
+  {
+    bioloid.interpolateStep();//move servos 1 'step
+    delay(3);
+  }
+
+
+
+  
 // MoveArmTo(512, 473, 281, 743, 512, 512, 200, true) ;
 
 MoveArmToHome();
@@ -277,6 +387,9 @@ void updateControls()
   
   if (classy.aPressed) {
     rickRoll();
+    }
+  if (classy.bPressed) {
+    leftStack();
     }
 
 

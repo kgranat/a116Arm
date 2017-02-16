@@ -9,7 +9,7 @@
 #if ARMTYPE == REACTOR
 
 #define ARMID       2
-#define CNT_SERVOS  8 //(sizeof(pgm_axdIDs)/sizeof(pgm_axdIDs[0]))
+#define CNT_SERVOS  6 //(sizeof(pgm_axdIDs)/sizeof(pgm_axdIDs[0]))
 #define OPT_WRISTROT
 
 /* Servo IDs */
@@ -59,7 +59,7 @@ enum {
 #define SHOULDER_MIN  205 
 #define SHOULDER_MAX  810
 
-#define ELBOW_N      819
+#define ELBOW_N      792
 #define ELBOW_MIN    210
 #define ELBOW_MAX    900
 
@@ -77,9 +77,9 @@ enum {
 
 // Define some lengths and offsets used by the arm
 #define BaseHeight          165L   // (L0)
-#define ShoulderLength      230L   // (L1)
-#define ElbowLength         195L   //(L2)Length of the Arm from Elbow Joint to Wrist Joint
-#define WristLength         50L   // (L3)Wrist length including Wrist rotate
+#define ShoulderLength      215L   // (L1)
+#define ElbowLength         227L   //(L2)Length of the Arm from Elbow Joint to Wrist Joint
+#define WristLength         135L   // (L3)Wrist length including Wrist rotate
 
 #endif
 
