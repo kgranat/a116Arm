@@ -310,7 +310,7 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
 
 //
 
- int tempInverse = (-0.0615*sShoulder)+1049.2;
+    int tempInverse = (-0.0615*sShoulder)+1049.2;
 
 
  
@@ -321,8 +321,8 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     SetPositionI_JOG(3, 0, sShoulder);
 
     
-    SetPositionI_JOG(4, 0, 1023-sElbow);
-    SetPositionI_JOG(6, 0, 1023-sWrist);
+    SetPositionI_JOG(4, 0, sElbow);
+    SetPositionI_JOG(6, 0, sWrist);
     SetPositionI_JOG(5, 0, sWristRot);
 
     

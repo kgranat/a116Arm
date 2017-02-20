@@ -58,8 +58,8 @@ void setup() {
   bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(2,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.setNextPose(3,512);//prepare the PAN servo to the centered position, pan/2048
-  bioloid.setNextPose(4,512);//preprare the tilt servo to the centered position, tilt/2048
-  bioloid.setNextPose(5,312);//prepare the PAN servo to the centered position, pan/2048
+  bioloid.setNextPose(4,712);//preprare the tilt servo to the centered position, tilt/2048
+  bioloid.setNextPose(5,512);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(6,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
   while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
