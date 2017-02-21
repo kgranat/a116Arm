@@ -207,19 +207,19 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
 
 
 
-//        Serial.print("MOVE ARM SBASE");
-//        Serial.print(" ");
-//        Serial.println(sBase);
-//        Serial.print(" "); 
-//        Serial.println(g_sIKY);
-//        Serial.print(" ");
-//        Serial.println(g_sIKZ);
-//        Serial.print(" ");
-//        Serial.println(g_sIKGA);
-//        Serial.print(" ");
-//        Serial.println(sWristRot);
-//        Serial.print(" ");
-//        Serial.println(sGrip);
+        Serial.print("MOVE ARM SBASE");
+        Serial.print(" ");
+        Serial.println(sBase);
+        Serial.print(" "); 
+        Serial.println(g_sIKY);
+        Serial.print(" ");
+        Serial.println(g_sIKZ);
+        Serial.print(" ");
+        Serial.println(g_sIKGA);
+        Serial.print(" ");
+        Serial.println(sWristRot);
+        Serial.print(" ");
+        Serial.println(sGrip);
 
   int sMaxDelta;
   int sDelta;

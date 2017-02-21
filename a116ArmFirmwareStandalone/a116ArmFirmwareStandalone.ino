@@ -464,7 +464,7 @@ void updateControls()
     
      // NOT THIS ONEjoint[WRIST_ROTATE] = 802;
 
-   // sWristRot = 826;
+    sWristRot = 826;
    }
 
    
@@ -474,7 +474,7 @@ void updateControls()
 
    
 
-     //sWristRot = 218;
+     sWristRot = 218;
 
 
 

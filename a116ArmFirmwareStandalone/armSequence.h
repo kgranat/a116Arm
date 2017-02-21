@@ -53,7 +53,7 @@ void leftStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 5000 , 0, playState);
+    IKSequencingControl(787 , 418 , 235 , 0 , 218 , 256 , 5000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
