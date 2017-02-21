@@ -53,7 +53,86 @@ void leftStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 1000 , 0, playState);
+    IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence");
+}
+
+
+void rightStack()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+//    A1_16_SetSpeed(1,1,20);
+//    A1_16_SetSpeed(2,1,20);
+//    A1_16_SetSpeed(3,1,20);
+//    A1_16_SetSpeed(4,1,20);
+//    A1_16_SetSpeed(5,1,20);
+//    A1_16_SetSpeed(6,1,20);
+
+  Serial.println("start IK sequence");
+    
+    IKSequencingControl(342 , 402 , 370 , 0 , 512 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence");
+}
+
+void homePos()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+//    A1_16_SetSpeed(1,1,20);
+//    A1_16_SetSpeed(2,1,20);
+//    A1_16_SetSpeed(3,1,20);
+//    A1_16_SetSpeed(4,1,20);
+//    A1_16_SetSpeed(5,1,20);
+//    A1_16_SetSpeed(6,1,20);
+
+  Serial.println("start IK sequence");
+    
+    IKSequencingControl(507 , 415 , 463 , 0 , 512 , 256 , 500 , 0, playState);
+    
+  Serial.println("end IK sequence");
+}
+
+void topStack()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+//    A1_16_SetSpeed(1,1,20);
+//    A1_16_SetSpeed(2,1,20);
+//    A1_16_SetSpeed(3,1,20);
+//    A1_16_SetSpeed(4,1,20);
+//    A1_16_SetSpeed(5,1,20);
+//    A1_16_SetSpeed(6,1,20);
+
+  Serial.println("start IK sequence");
+    
+    IKSequencingControl(507 , 415 , 463 , 0 , 512 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence");
+}
+
+
+void bottomStack()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL_90;
+    MoveArmTo90Home();
+  playState = 1;
+//    A1_16_SetSpeed(1,1,20);
+//    A1_16_SetSpeed(2,1,20);
+//    A1_16_SetSpeed(3,1,20);
+//    A1_16_SetSpeed(4,1,20);
+//    A1_16_SetSpeed(5,1,20);
+//    A1_16_SetSpeed(6,1,20);
+
+  Serial.println("start IK sequence");
+    
+    //IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 1000 , 0, playState);
     
   Serial.println("end IK sequence");
 }

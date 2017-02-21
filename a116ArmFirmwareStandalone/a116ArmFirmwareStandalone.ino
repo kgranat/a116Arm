@@ -172,7 +172,7 @@ void setup() {
   
   Serial.println("A1-16 Robot Arm Online.");
 
-  Serial1.begin(115200);//start serial communication on serial1 / A!-16 servo
+  Serial.begin(115200);//start serial communication on serial1 / A!-16 servo
   A1_16_Ini(115200);//initiate a1-16 library
   bioloid.setup(115200, 6);//intiate bioloid interpolation 
 
@@ -280,8 +280,9 @@ void setup() {
 
 
 
+  delay(1000);
 
-
+  bioloid.readPose();//find where the servos are currently
   bioloid.poseSize = 6;//2 servos, so the pose size will be 2
   bioloid.readPose();//find where the servos are currently
   bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
@@ -290,20 +291,28 @@ void setup() {
   bioloid.setNextPose(4,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.setNextPose(5,512);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(6,512);//preprare the tilt servo to the centered position, tilt/2048
-  bioloid.interpolateSetup(2500);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+  bioloid.interpolateSetup(5000);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
   while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
   {
     bioloid.interpolateStep();//move servos 1 'step
     delay(3);
   }
 
+  
+ // MSound(3, 100, 2000, 180, 2250, 200, 2500);
+
+  
+homePos();
 
 
   
 // MoveArmTo(512, 473, 281, 743, 512, 512, 200, true) ;
 
-MoveArmToHome();
-delay(5000);
+   // g_bIKMode = IKM_CYLINDRICAL;
+   // IKSequencingControl(507 , 415 , 463 , 0 , 512 , 256 , 5000 , 0, playState);
+delay(1000);
+  
+  MSound(3, 100, 2000, 180, 2250, 200, 2500);
   
 }//end setup
 
@@ -328,12 +337,12 @@ void loop()
   // if (bioloid.interpolating > 0) 
   // {
   //   bioloid.interpolateStep();
-  // }
 } //end Main
 
 
 
 
+  // }
 
 
 
@@ -453,24 +462,38 @@ void updateControls()
    if(classy.leftShoulderPressed)
    {
     
-     // joint[WRIST_ROTATE] = 802;
+     // NOT THIS ONEjoint[WRIST_ROTATE] = 802;
 
-    sWristRot = 826;
+   // sWristRot = 826;
    }
 
    
    if(classy.rightShoulderPressed)
    {
-     // joint[WRIST_ROTATE] = 222;
+     // NOT THIS ONEjoint[WRIST_ROTATE] = 222;
 
    
 
-     sWristRot = 218;
+     //sWristRot = 218;
 
 
 
    }
 
+if (classy.leftDPressed == true) {
+  leftStack();
+  }
+  
+  if (classy.rightDPressed == true) {
+  rightStack();
+  }
+  
+  if (classy.upDPressed == true) {
+  topStack();
+  }
+  if (classy.downDPressed == true) {
+  bottomStack();
+  }
 
 servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
 
