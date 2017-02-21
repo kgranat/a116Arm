@@ -64,7 +64,25 @@ void BOLIDE_Player::loadPose( const unsigned int * addr ){
 /* read in current servo positions to the pose. */
 void BOLIDE_Player::readPose(){
     for(int i=0;i<poseSize;i++){
-        pose_[i] = ReadPosition(id_[i])<<A1_16_SHIFT;
+        
+        int temp;
+        temp =  ReadPosition(id_[i]);
+        if(temp < 0)
+        {
+            temp =  ReadPosition(id_[i]);
+
+        }
+
+        if(temp < 0)
+        {
+            temp =  ReadPosition(id_[i]);
+
+        }
+
+        pose_[i] = temp <<A1_16_SHIFT;
+
+        // Serial.print(temp);
+        // Serial.print(" ");
 		delay(25);   
     }
 }
@@ -78,6 +96,12 @@ void BOLIDE_Player::writePose(){
 	packet_send[3] = 0xfe;
 	packet_send[4] = CMD_I_JOG;
 	checksum_1 = packet_send[2]^packet_send[3]^packet_send[4];
+
+    // Serial.println(" ");
+    // Serial.println(" ");
+    // Serial.println(" ");
+        int io = 0;
+
 	for(_i = 0;_i < poseSize;_i++){
 		temp = pose_[_i] >> A1_16_SHIFT;
         packet_send[7+5*_i] = temp&0xff;
@@ -90,12 +114,20 @@ void BOLIDE_Player::writePose(){
         checksum_1 ^= packet_send[10+5*_i];
         packet_send[11+5*_i] = 2;
         checksum_1 ^= packet_send[11+5*_i];
+
+    
+    // Serial.print(io++);
+    // Serial.print(",");
+    // Serial.println(temp);
+
     }
 	checksum_1 &= 0xfe;
 	packet_send[5] = checksum_1;
 	checksum_2 = (~checksum_1)&0xfe;
 	packet_send[6] = checksum_2;
 	for(_j = 0;_j<packet_send[2];_j++) Serial1.write(packet_send[_j]);
+
+
 }
 
 /* set up for an interpolation from pose to nextpose over TIME 
