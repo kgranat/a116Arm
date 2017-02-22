@@ -110,7 +110,7 @@ void bottomStack()
 
   Serial.println("start IK sequence");
     
-    //IKSequencingControl(642 , 402 , 370 , 0 , 512 , 256 , 1000 , 0, playState);
+    IKSequencingControl(519 , 99 , 59 , -71 , 512 , 256 , 1000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
