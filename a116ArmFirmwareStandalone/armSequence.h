@@ -81,7 +81,7 @@ void homePos()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(507 , 415 , 463 , 0 , 512 , 256 , 500 , 0, playState);
+    IKSequencingControl(412, -40 , 715 , 70 , 218 , 256 , 5000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -104,8 +104,7 @@ void topStack()
 void bottomStack()
 {
   
-    g_bIKMode = IKM_CYLINDRICAL_90;
-    MoveArmTo90Home();
+    g_bIKMode = IKM_CYLINDRICAL;  
   playState = 1;
 
   Serial.println("start IK sequence");

@@ -376,7 +376,7 @@ void updateControls()
   
     if(classy.homePressed == true)
     {
-      //do something, don't need the state button unless it is a very short action (short actions may repeat)
+      homePos();
     }
     
     if(classy.selectPressed == true)
@@ -414,7 +414,7 @@ void updateControls()
      //only update the shoulder joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyYVal > DEADBANDHIGH || joyYVal < DEADBANDLOW)
      {
-       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, -2*spd, 2*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, 2*spd, -2*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sIKY = g_sIKY + joyYMapped;
      }
   
