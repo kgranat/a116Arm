@@ -495,6 +495,10 @@ if (classy.leftDPressed == true) {
   bottomStack();
   }
 
+  if (classy.yPressed == true) {
+  sideStack;
+  }
+
 servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
 
   servo5.write(servo5Value);
