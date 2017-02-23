@@ -78,6 +78,8 @@
 char notes[] = "cdfda ag cdfdg gf ";                  // This is the note you want to play
 int  beats[] = {1,1,1,1,1,1,4,4,2,1,1,1,1,1,1,4,4,2}; // How long to play the note in array
 
+int xspd = 5;
+
 Servo myservo;  // create servo object to control a servo
 WiiClassy classy = WiiClassy(); //start an instance of the WiiClassy Library
 
@@ -406,10 +408,12 @@ void updateControls()
      //only update the base joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyXVal > DEADBANDHIGH || joyXVal < DEADBANDLOW)
      {
-       joyXMapped = mapfloat(joyXVal, WII_JOYSTICK_MAX, 0,  -spd * 5 , spd * 5); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyXMapped = mapfloat(joyXVal, WII_JOYSTICK_MAX, 0,  -spd * xspd , spd * xspd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sBase = g_sBase + joyXMapped;
 
      }
+
+
   
      //only update the shoulder joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyYVal > DEADBANDHIGH || joyYVal < DEADBANDLOW)
@@ -472,11 +476,7 @@ void updateControls()
    {
      // NOT THIS ONEjoint[WRIST_ROTATE] = 222;
 
-   
-
      sWristRot = 218;
-
-
 
    }
 
@@ -491,7 +491,23 @@ void updateControls()
   {
     leftStackphase2();//second pose;
   } 
-  
+  if (classy.rightDPressed == true  ) 
+  {
+    rightStackphase2();//second pose;
+  }
+  if (classy.upDPressed == true  ) 
+  {
+    topStackphase2();//second pose;
+  }
+  if (classy.downDPressed == true  ) 
+  {
+    bottomStackphase2();//second pose;
+  }
+  if (classy.yPressed == true  ) 
+  {
+    sideStackphase2();//second pose;
+  }
+  xspd = 2; //make smaller to slow the base rotation when x is pressed
  }
  else
  {
@@ -499,6 +515,23 @@ void updateControls()
   {
     leftStack();//pose one
   } 
+   if (classy.rightDPressed == true  )  
+  {
+    rightStack();//pose one
+  }
+   if (classy.upDPressed == true  )  
+  {
+    topStack();//pose one
+  }
+  if (classy.downDPressed == true  )  
+  {
+    bottomStack();//pose one
+  }
+  if (classy.yPressed == true  )  
+  {
+    sideStack();//pose one
+  }
+  xspd = 5;
  }
 
 
@@ -509,81 +542,41 @@ void updateControls()
 //  rightStack();
 //  }
 
- if (classy.xPressed == true) 
- {
-  if (classy.rightDPressed == true  ) 
-  {
-    rightStackphase2();//second pose;
-  } 
-  
- }
- else
- {
-  if (classy.rightDPressed == true  )  
-  {
-    rightStack();//pose one
-  } 
- }
+
+
+
+// if (classy.xPressed == true) 
+// {
+//  if (classy.rightDPressed == true  ) 
+//  {
+//    rightStackphase2();//second pose;
+//  } 
+//                                           //basic if else statement for switching between phases 1 and 2 for poses
+// }
+// else
+// {
+//  if (classy.rightDPressed == true  )  
+//  {
+//    rightStack();//pose one
+//  } 
+// }
+
+
+
+
   
 //  if (classy.upDPressed == true) {
 //  topStack();
 //  }
 
- if (classy.xPressed == true) 
- {
-  if (classy.upDPressed == true  ) 
-  {
-    topStackphase2();//second pose;
-  } 
-  
- }
- else
- {
-  if (classy.upDPressed == true  )  
-  {
-    topStack();//pose one
-  } 
- }
-  
 //  if (classy.downDPressed == true) {
 //  bottomStack();
 //  }
-
-   if (classy.xPressed == true) 
- {
-  if (classy.downDPressed == true  ) 
-  {
-    bottomStackphase2();//second pose;
-  } 
-  
- }
- else
- {
-  if (classy.downDPressed == true  )  
-  {
-    bottomStack();//pose one
-  } 
- }
 
 //  if (classy.yPressed == true) {
 //  sideStack();
 //  }
 
- if (classy.xPressed == true) 
- {
-  if (classy.yPressed == true  ) 
-  {
-    sideStackphase2();//second pose;
-  } 
-  
- }
- else
- {
-  if (classy.yPressed == true  )  
-  {
-    sideStack();//pose one
-  } 
- }
 
 
 servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
