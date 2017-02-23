@@ -72,11 +72,7 @@
 
 
 #define buzzerPin   8
-#define songLength  18
-#define tempo       150
 
-char notes[] = "cdfda ag cdfdg gf ";                  // This is the note you want to play
-int  beats[] = {1,1,1,1,1,1,4,4,2,1,1,1,1,1,1,4,4,2}; // How long to play the note in array
 
 int xspd = 5;
 
@@ -396,9 +392,9 @@ void updateControls()
     }
     
   
-  if (classy.aPressed) {
-    rickRoll();
-    }
+//  if (classy.aPressed) {
+//    rickRoll();
+//    }
   if (classy.bPressed) {
     leftStack();
     }
@@ -485,53 +481,60 @@ void updateControls()
 //  }
 
 
- if (classy.xPressed == true) 
+ if (classy.xPressed) 
  {
-  if (classy.leftDPressed == true  ) 
-  {
-    leftStackphase2();//second pose;
-  } 
-  if (classy.rightDPressed == true  ) 
-  {
-    rightStackphase2();//second pose;
-  }
-  if (classy.upDPressed == true  ) 
-  {
-    topStackphase2();//second pose;
-  }
-  if (classy.downDPressed == true  ) 
-  {
-    bottomStackphase2();//second pose;
-  }
-  if (classy.yPressed == true  ) 
-  {
-    sideStackphase2();//second pose;
-  }
-  xspd = 2; //make smaller to slow the base rotation when x is pressed
+          if (classy.leftDPressed == true  ) 
+          {
+            leftStackphase2();//second pose;
+          } 
+          if (classy.rightDPressed == true  ) 
+          {
+            rightStackphase2();//second pose;
+          }
+          if (classy.upDPressed == true  ) 
+          {
+            topStackphase2();//second pose;
+          }
+          if (classy.downDPressed == true  ) 
+          {
+            bottomStackphase2();//second pose;
+          }
+          if (classy.yPressed == true  ) 
+          {
+            sideStackphase2();//second pose;
+          }
+            if (classy.aPressed == true  ) 
+          {
+            keyboardCat();
+          }
+          xspd = 2; //make smaller to slow the base rotation when x is pressed
  }
- else
+ else  
  {
-  if (classy.leftDPressed == true  )  
-  {
-    leftStack();//pose one
-  } 
-   if (classy.rightDPressed == true  )  
-  {
-    rightStack();//pose one
-  }
-   if (classy.upDPressed == true  )  
-  {
-    topStack();//pose one
-  }
-  if (classy.downDPressed == true  )  
-  {
-    bottomStack();//pose one
-  }
-  if (classy.yPressed == true  )  
-  {
-    sideStack();//pose one
-  }
-  xspd = 5;
+          if (classy.leftDPressed == true  )  
+          {
+            leftStack();//pose one
+          } 
+           if (classy.rightDPressed == true  )  
+          {
+            rightStack();//pose one
+          }
+           if (classy.upDPressed == true  )  
+          {
+            topStack();//pose one
+          }
+          if (classy.downDPressed == true  )  
+          {
+            bottomStack();//pose one
+          }
+          if (classy.yPressed == true  )  
+          {
+            sideStack();//pose one
+          }
+          if (classy.aPressed) {
+            rickRoll();
+          }
+          xspd = 5;
  }
 
 
@@ -732,31 +735,4 @@ void MSound(byte cNotes, ...)
 
 
 
-void rickRoll(){                    // this function is what actually plays the song
-  int i, duration;
-  for (i = 0; i < songLength; i++){ // step through the song arrays
-    duration = beats[i] * tempo;    // length of note/rest in ms
-    if (notes[i] == ' '){
-      delay(duration);              // then pause for a moment
-    }else{
-      tone(buzzerPin, frequency(notes[i]), duration);
-      delay(duration);              // wait for tone to finish
-    }
-    delay(tempo/10);                // brief pause between notes
-  }
-}
-//-------------frequency-----------
-int frequency(char note){           // This function is called by rickRoll()
-  int r;
-  const int numNotes = 8;           // number of notes we're storing
-  char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };    // letter notes
-  int frequencies[] = {262, 294, 330, 349, 392, 440, 494, 523}; // frequencies
-  for (r = 0; r < numNotes; r++){
-    if (names[r] == note){
-      return(frequencies[r]);       // Yes! Return the frequency
-    }
-  }
-  return(0);
-}
-//============================= you need these functions =======================================
 
