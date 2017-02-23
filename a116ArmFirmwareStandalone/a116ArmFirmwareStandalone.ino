@@ -480,24 +480,111 @@ void updateControls()
 
    }
 
-if (classy.leftDPressed == true) {
-  leftStack();
-  }
-  
-  if (classy.rightDPressed == true) {
-  rightStack();
-  }
-  
-  if (classy.upDPressed == true) {
-  topStack();
-  }
-  if (classy.downDPressed == true) {
-  bottomStack();
-  }
+//if (classy.leftDPressed == true) {
+//  leftStack(); //pre-total automation
+//  }
 
-  if (classy.yPressed == true) {
-  sideStack();
-  }
+
+ if (classy.xPressed == true) 
+ {
+  if (classy.leftDPressed == true  ) 
+  {
+    leftStackphase2();//second pose;
+  } 
+  
+ }
+ else
+ {
+  if (classy.leftDPressed == true  )  
+  {
+    leftStack();//pose one
+  } 
+ }
+
+
+
+
+  
+//  if (classy.rightDPressed == true) {
+//  rightStack();
+//  }
+
+ if (classy.xPressed == true) 
+ {
+  if (classy.rightDPressed == true  ) 
+  {
+    rightStackphase2();//second pose;
+  } 
+  
+ }
+ else
+ {
+  if (classy.rightDPressed == true  )  
+  {
+    rightStack();//pose one
+  } 
+ }
+  
+//  if (classy.upDPressed == true) {
+//  topStack();
+//  }
+
+ if (classy.xPressed == true) 
+ {
+  if (classy.upDPressed == true  ) 
+  {
+    topStackphase2();//second pose;
+  } 
+  
+ }
+ else
+ {
+  if (classy.upDPressed == true  )  
+  {
+    topStack();//pose one
+  } 
+ }
+  
+//  if (classy.downDPressed == true) {
+//  bottomStack();
+//  }
+
+   if (classy.xPressed == true) 
+ {
+  if (classy.downDPressed == true  ) 
+  {
+    bottomStackphase2();//second pose;
+  } 
+  
+ }
+ else
+ {
+  if (classy.downDPressed == true  )  
+  {
+    bottomStack();//pose one
+  } 
+ }
+
+//  if (classy.yPressed == true) {
+//  sideStack();
+//  }
+
+ if (classy.xPressed == true) 
+ {
+  if (classy.yPressed == true  ) 
+  {
+    sideStackphase2();//second pose;
+  } 
+  
+ }
+ else
+ {
+  if (classy.yPressed == true  )  
+  {
+    sideStack();//pose one
+  } 
+ }
+
 
 servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
 

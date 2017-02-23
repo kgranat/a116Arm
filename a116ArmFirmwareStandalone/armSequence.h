@@ -47,11 +47,23 @@ void leftStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(527 , 430 , 237 , 0 , 218 , 256 , 5000 , 0, playState);
+    IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
 
+void leftStackphase2()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+    //IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
+}
 
 void rightStack()
 {
@@ -65,6 +77,20 @@ void rightStack()
     IKSequencingControl(352 , 430 , 227 , 0 , 218 , 256 , 5000 , 0, playState);
     
   Serial.println("end IK sequence");
+}
+
+
+void rightStackphase2()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+    //IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
 }
 
 void homePos()
@@ -100,6 +126,18 @@ void topStack()
   Serial.println("end IK sequence");
 }
 
+void topStackphase2()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+    //IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
+}
 
 void bottomStack()
 {
@@ -112,6 +150,19 @@ void bottomStack()
     IKSequencingControl(519 , 99 , 59 , -71 , 512 , 256 , 1000 , 0, playState);
     
   Serial.println("end IK sequence");
+}
+
+void bottomStackphase2()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+    //IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
 }
 
 void sideStack()
@@ -127,4 +178,16 @@ void sideStack()
   Serial.println("end IK sequence");
 }
 
+void sideStackphase2()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+    //IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
+}
 
