@@ -75,6 +75,7 @@
 
 
 int xspd = 5;
+int ZYspd = 2;
 
 Servo myservo;  // create servo object to control a servo
 WiiClassy classy = WiiClassy(); //start an instance of the WiiClassy Library
@@ -414,7 +415,7 @@ void updateControls()
      //only update the shoulder joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyYVal > DEADBANDHIGH || joyYVal < DEADBANDLOW)
      {
-       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, 2*spd, -2*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, ZYspd*spd, -ZYspd*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sIKY = g_sIKY + joyYMapped;
      }
   
@@ -423,7 +424,7 @@ void updateControls()
      {
       
   
-       joyZMapped = mapfloat(joyZVal, WII_JOYSTICK_MAX, 0, spd*2, -spd*2); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyZMapped = mapfloat(joyZVal, WII_JOYSTICK_MAX, 0, spd*ZYspd, -spd*ZYspd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sIKZ = g_sIKZ + joyZMapped;
      }
      
@@ -507,7 +508,9 @@ void updateControls()
           {
             keyboardCat();
           }
-          xspd = 2; //make smaller to slow the base rotation when x is pressed
+          xspd = 1; //make smaller to slow the base rotation when x is pressed
+          ZYspd = 1;
+          spdgrip = 1; 
  }
  else  
  {
@@ -535,6 +538,8 @@ void updateControls()
             rickRoll();
           }
           xspd = 5;
+          ZYspd = 2;
+          spdgrip = 5; 
  }
 
 
