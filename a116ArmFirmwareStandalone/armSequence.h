@@ -47,7 +47,7 @@ void leftStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 5000 , 0, playState);
+    IKSequencingControl(532 , 400 , 249 , 24 , 230 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -60,7 +60,7 @@ void leftStackphase2()
 
   Serial.println("start IK sequence phase 2");
     //add here all the poses/data that will need to be sent that will automate the release of this stack
-    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 5000 , 0, playState);
+    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence phase 2");
 }
@@ -74,7 +74,7 @@ void rightStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(352 , 430 , 227 , 0 , 218 , 256 , 5000 , 0, playState);
+    IKSequencingControl(352 , 430 , 227 , 0 , 218 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -88,7 +88,7 @@ void rightStackphase2()
 
   Serial.println("start IK sequence phase 2");
     //add here all the poses/data that will need to be sent that will automate the release of this stack
-   IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 5000 , 0, playState);
+   IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence phase 2");
 }
@@ -107,7 +107,7 @@ void homePos()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(412, -40 , 715 , 70 , 218 , 256 , 5000 , 0, playState);
+    IKSequencingControl(412, -40 , 715 , 70 , 218 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -121,7 +121,7 @@ void topStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(448 , 548 , 142 , 0 , 218 , 256 , 5000 , 0, playState);
+    IKSequencingControl(448 , 548 , 142 , 0 , 218 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -134,7 +134,7 @@ void topStackphase2()
 
   Serial.println("start IK sequence phase 2");
     //add here all the poses/data that will need to be sent that will automate the release of this stack
-    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 5000 , 0, playState);
+    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence phase 2");
 }
@@ -147,7 +147,7 @@ void bottomStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(519 , 99 , 59 , -71 , 512 , 256 , 5000 , 0, playState);
+    IKSequencingControl(519 , 99 , 59 , -71 , 512 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -160,7 +160,7 @@ void bottomStackphase2()
 
   Serial.println("start IK sequence phase 2");
     //add here all the poses/data that will need to be sent that will automate the release of this stack
-    IKSequencingControl(437 , 310 , 189 , 0 , 826 , 256 , 5000 , 0, playState);
+    IKSequencingControl(437 , 310 , 189 , 0 , 826 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence phase 2");
 }
@@ -173,7 +173,7 @@ void sideStack()
 
   Serial.println("start IK sequence");
     
-    IKSequencingControl(787 , 418 , 235 , 0 , 218 , 256 , 5000 , 0, playState);
+    IKSequencingControl(787 , 418 , 235 , 0 , 218 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence");
 }
@@ -186,8 +186,20 @@ void sideStackphase2()
 
   Serial.println("start IK sequence phase 2");
     //add here all the poses/data that will need to be sent that will automate the release of this stack
-    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 5000 , 0, playState);
+    IKSequencingControl(437 , 360 , 144 , 0 , 826 , 256 , 4000 , 0, playState);
     
   Serial.println("end IK sequence phase 2");
 }
 
+void smoothIt()
+{
+  
+    g_bIKMode = IKM_CYLINDRICAL;
+  playState = 1;
+
+  Serial.println("start IK sequence phase 2");
+    //add here all the poses/data that will need to be sent that will automate the release of this stack
+   IKSequencingControl(400 , 399 , 368 , 70 , 218 , 256 , 4000 , 0, playState);
+    
+  Serial.println("end IK sequence phase 2");
+}

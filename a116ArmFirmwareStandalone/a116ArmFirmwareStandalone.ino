@@ -382,7 +382,7 @@ void updateControls()
     {
 
 
-      //do something, don't need the state button unless it is a very short action (short actions may repeat)
+      smoothIt();//do something, don't need the state button unless it is a very short action (short actions may repeat)
     }
     
     if(classy.startPressed == true)
