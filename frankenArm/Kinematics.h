@@ -1,5 +1,6 @@
 #ifndef KINEMATICS_H
 #define KINEMATICS_H
+#include <ax12.h>
 
 #include "GlobalArm.h"
 extern BOLIDE_Player bioloid;
@@ -120,10 +121,18 @@ uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
   int sol3 = radToMXServo(3.2 + flGripRad - q1 - q2 );
   
 #else  //Use different radians equation for AX servos
-  int sol1 = radToAXServo(q1-1.57);
-  int sol2 = radToAXServo(3.14-q2);
+//  int sol1 = radToAXServo(q1-1.57);
+//  int sol2 = radToAXServo(3.14-q2);
+//  // solve for wrist rotate
+//  int sol3 = radToAXServo(3.2 + flGripRad - q1 - q2 );
+
+  int sol1 = radToMXServo(q1-1.57);
+  int sol2 = radToMXServo(3.14-q2);
   // solve for wrist rotate
   int sol3 = radToAXServo(3.2 + flGripRad - q1 - q2 );
+
+
+  
 #endif  
 
 
@@ -317,15 +326,34 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     SetPositionI_JOG(1, 0, sBase);
     
     
-    SetPositionI_JOG(2, 0, tempInverse- sShoulder);
-    SetPositionI_JOG(3, 0, sShoulder);
+    //SetPositionI_JOG(2, 0, tempInverse- sShoulder);
+    //SetPositionI_JOG(3, 0, sShoulder);
 
     
     SetPositionI_JOG(4, 0, sElbow);
     SetPositionI_JOG(6, 0, sWrist);
     SetPositionI_JOG(5, 0, sWristRot);
 
+  SetPosition(10,sShoulder);
+  SetPosition(9,sElbow);
+
+
     
+//
+        Serial.print("MOVE ARM SBASE");
+        Serial.print(" ");
+        Serial.println(sBase);
+        Serial.print(" ");
+        Serial.println(sShoulder);
+        Serial.print(" ");
+        Serial.println(sElbow);
+        Serial.print(" ");
+        Serial.println(sWrist);
+        Serial.print(" ");
+        Serial.println(sWristRot);
+
+
+
 
 
 
