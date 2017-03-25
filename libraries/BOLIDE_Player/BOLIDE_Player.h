@@ -93,8 +93,10 @@ class BOLIDE_Player
      *  }
      */
     
-  private:  
     unsigned int * pose_;                       // the current pose, updated by Step(), set out by Sync()
+
+    
+  private:  
     unsigned int * nextpose_;                   // the destination pose, where we put on load
     int * speed_;                               // speeds for interpolation 
     unsigned char * id_;                        // servo id for this index

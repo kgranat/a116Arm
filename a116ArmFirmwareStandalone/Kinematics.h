@@ -203,27 +203,23 @@ uint8_t doArmIK(boolean fCartesian, int sIKX, int sIKY, int sIKZ, int sIKGA)
 //===================================================================================================
 void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, int sGrip, int wTime, boolean fWait) {
 
+       // Serial.begin(115200);
 
 
 
-
-
-//
-//
-//
-//        Serial.print("MOVE ARM SBASE");
-//        Serial.print(" ");
-//        Serial.println(sBase);
-//        Serial.print(" ");
-//        Serial.println(g_sIKY);
-//        Serial.print(" ");
-//        Serial.println(g_sIKZ);
-//        Serial.print(" ");
-//        Serial.println(g_sIKGA);
-//        Serial.print(" ");
-//        Serial.println(sWristRot);
-//        Serial.print(" ");
-//        Serial.println(sGrip);
+        Serial.print("MOVE ARM SBASE");
+        Serial.print(" ");
+        Serial.println(sBase);
+        Serial.print(" "); 
+        Serial.println(g_sIKY);
+        Serial.print(" ");
+        Serial.println(g_sIKZ);
+        Serial.print(" ");
+        Serial.println(g_sIKGA);
+        Serial.print(" ");
+        Serial.println(sWristRot);
+        Serial.print(" ");
+        Serial.println(sGrip);
 
   int sMaxDelta;
   int sDelta;
@@ -321,11 +317,21 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     SetPositionI_JOG(3, 0, sShoulder);
 
     
+<<<<<<< HEAD
     SetPositionI_JOG(4, 0, sElbow);
     SetPositionI_JOG(6, 0, sWrist);
+=======
+    SetPositionI_JOG(4, 0, sElbow);   //used to be 1023-sElbow gave us inversed angle problems
+    SetPositionI_JOG(6, 0, sWrist);   //used to be 1023-sWrist gave us inversed angle problems
+>>>>>>> origin/master
     SetPositionI_JOG(5, 0, sWristRot);
 
-    
+//    bioloid.pose_[0] = sBase;
+//    bioloid.pose_[1] = tempInverse- sShoulder;
+//    bioloid.pose_[2] = sShoulder;
+//    bioloid.pose_[3] = sElbow;
+//    bioloid.pose_[5] = sWrist;
+//    bioloid.pose_[4] = sWristRot;
 
 
 
@@ -366,8 +372,12 @@ void MoveArmToPose(int sBase, int sShoulder, int sElbow, int sWrist, int sWristR
 
 #if ARMTYPE == REACTOR  //double joints on reactor are handled differently
   sMaxDelta = abs(bioloid.getCurPose(SID_RSHOULDER) - sShoulder);
-  bioloid.setNextPose(SID_RSHOULDER, sShoulder);
-  bioloid.setNextPose(SID_LSHOULDER, 1024-sShoulder);
+
+  
+ int tempInverse = (-0.0615*sShoulder)+1049.2;
+ 
+  bioloid.setNextPose(SID_RSHOULDER, tempInverse - sShoulder);
+  bioloid.setNextPose(SID_LSHOULDER, sShoulder);
 
   sDelta = abs(bioloid.getCurPose(SID_RELBOW) - sElbow);
   if (sDelta > sMaxDelta)
@@ -382,13 +392,13 @@ void MoveArmToPose(int sBase, int sShoulder, int sElbow, int sWrist, int sWristR
   sDelta = abs(bioloid.getCurPose(SID_ELBOW) - sElbow);
   if (sDelta > sMaxDelta)
     sMaxDelta = sDelta;
-  bioloid.setNextPose(SID_ELBOW, 1023-sElbow);
+  bioloid.setNextPose(SID_ELBOW, sElbow);
 #endif
 
   sDelta = abs(bioloid.getCurPose(SID_WRIST) - sWrist);
   if (sDelta > sMaxDelta)
     sMaxDelta = sDelta;
-  bioloid.setNextPose(SID_WRIST, 1023-sWrist);
+  bioloid.setNextPose(SID_WRIST, sWrist);
 
 
 //#ifdef OPT_WRISTROT
@@ -406,9 +416,9 @@ void MoveArmToPose(int sBase, int sShoulder, int sElbow, int sWrist, int sWristR
   g_sGrip = sGrip;
 
   // Now start the move - But first make sure we don't move too fast.  
-  if (((long)sMaxDelta*wTime/1000L) > MAX_SERVO_DELTA_PERSEC) {
-    wTime = ((long)sMaxDelta*1000L)/ MAX_SERVO_DELTA_PERSEC;
-  }
+//  if (((long)sMaxDelta*wTime/1000L) > MAX_SERVO_DELTA_PERSEC) {
+//    wTime = ((long)sMaxDelta*1000L)/ MAX_SERVO_DELTA_PERSEC;
+//  }
 
 
    bioloid.interpolateSetup(wTime);
@@ -489,7 +499,21 @@ void MoveArmToHome(void) {
 void MoveArmTo90Home(void) {
 
 //  if (g_bIKMode != IKM_BACKHOE) {
-    g_bIKStatus = doArmIK(true, 0, 150, 30, -90);
+
+
+
+    g_sIKY = 150;
+    g_sIKZ = 30;
+    g_sIKGA = -90;
+
+    sBase = BASE_N;
+    sWristRot = WROT_N;
+    sGrip = GRIP_N;
+
+
+
+    
+    g_bIKStatus = doArmIK(true, 0, g_sIKY, g_sIKZ, -g_sIKGA);
     MoveArmTo(sBase, sShoulder, sElbow, sWrist, 512, 256, 2000, true);
      g_fArmActive = false;
 //  }
