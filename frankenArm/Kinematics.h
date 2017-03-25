@@ -330,7 +330,7 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     //SetPositionI_JOG(3, 0, sShoulder);
 
     
-    SetPositionI_JOG(4, 0, sElbow);
+    //SetPositionI_JOG(4, 0, sElbow);
     SetPositionI_JOG(6, 0, sWrist);
     SetPositionI_JOG(5, 0, sWristRot);
 
