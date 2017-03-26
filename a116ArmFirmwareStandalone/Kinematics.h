@@ -317,13 +317,11 @@ void MoveArmTo(int sBase, int sShoulder, int sElbow, int sWrist, int sWristRot, 
     SetPositionI_JOG(3, 0, sShoulder);
 
     
-<<<<<<< HEAD
+
     SetPositionI_JOG(4, 0, sElbow);
     SetPositionI_JOG(6, 0, sWrist);
-=======
-    SetPositionI_JOG(4, 0, sElbow);   //used to be 1023-sElbow gave us inversed angle problems
-    SetPositionI_JOG(6, 0, sWrist);   //used to be 1023-sWrist gave us inversed angle problems
->>>>>>> origin/master
+
+
     SetPositionI_JOG(5, 0, sWristRot);
 
 //    bioloid.pose_[0] = sBase;

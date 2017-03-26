@@ -14,7 +14,7 @@
 
 /* Servo IDs */
 enum {
-  SID_BASE=1, SID_RSHOULDER, SID_LSHOULDER, SID_RELBOW,SID_WRISTROT, SID_WRIST,  SID_GRIP};
+  SID_BASE=1, SID_RSHOULDER, SID_LSHOULDER, SID_GRIP,SID_WRISTROT, SID_WRIST,  SID_RELBOW};
 
 // Normal Work Area
 
@@ -58,7 +58,7 @@ enum {
 #define SHOULDER_MIN  1024 
 #define SHOULDER_MAX  3072
 
-#define ELBOW_N      3072
+#define ELBOW_N      3072 
 #define ELBOW_MIN    1024
 #define ELBOW_MAX    3072
 
@@ -75,10 +75,10 @@ enum {
 #define GRIP_MAX     512
 
 // Define some lengths and offsets used by the arm
-#define BaseHeight          165L   // (L0)
-#define ShoulderLength      215L   // (L1)
-#define ElbowLength         227L   //(L2)Length of the Arm from Elbow Joint to Wrist Joint
-#define WristLength         135L   // (L3)Wrist length including Wrist rotate
+#define BaseHeight          205L   // (L0)
+#define ShoulderLength      130L   // (L1)
+#define ElbowLength         255L   //(L2)Length of the Arm from Elbow Joint to Wrist Joint
+#define WristLength         240L   // (L3)Wrist length including Wrist rotate
 
 #endif
 

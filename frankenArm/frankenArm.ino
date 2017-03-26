@@ -72,17 +72,21 @@
 #include <WiiClassy.h>  
 #include <Servo.h>  
 
+#include <BioloidController.h>
 
 #define buzzerPin   8
 #define songLength  18
 #define tempo       150
 
-char notes[] = "cdfda ag cdfdg gf ";                  // This is the note you want to play
-int  beats[] = {1,1,1,1,1,1,4,4,2,1,1,1,1,1,1,4,4,2}; // How long to play the note in array
+
+int xspd = 5;
+int ZYspd = 2;
 
 Servo myservo;  // create servo object to control a servo
 WiiClassy classy = WiiClassy(); //start an instance of the WiiClassy Library
 
+
+#include <BioloidController.h>
 
 
 //=============================================================================
@@ -90,6 +94,8 @@ WiiClassy classy = WiiClassy(); //start an instance of the WiiClassy Library
 //=============================================================================
 
 BOLIDE_Player bioloid ; //start bioloid controller at 1mbps
+
+BioloidController oneTrueBioloid = BioloidController(57600);  //create a bioloid object at a baud of 1MBps
 
 
 
@@ -291,7 +297,7 @@ void setup() {
 
 
 
-
+  bioloid.readPose();//find where the servos are currently
   bioloid.poseSize = 6;//2 servos, so the pose size will be 2
   bioloid.readPose();//find where the servos are currently
   bioloid.setNextPose(1,512);//prepare the PAN servo to the centered position, pan/2048
@@ -301,19 +307,49 @@ void setup() {
   bioloid.setNextPose(5,512);//prepare the PAN servo to the centered position, pan/2048
   bioloid.setNextPose(6,512);//preprare the tilt servo to the centered position, tilt/2048
   bioloid.interpolateSetup(2500);//setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
-  while(bioloid.interpolating > 0)  //until we have reached the positions set in setNextPose, execute the instructions in this loop
-  {
-    bioloid.interpolateStep();//move servos 1 'step
-    delay(3);
-  }
+
 
 
 
   
+
+  
+
+  
+  oneTrueBioloid.poseSize = 10;            //we IDed the servos high, so the pose needs to be at least 10
+  oneTrueBioloid.readPose();              //find where the servos are currently
+  oneTrueBioloid.setNextPose(10,2513);    //prepare the PAN servo to the default position
+  oneTrueBioloid.setNextPose(9,2543);  //preprare the tilt servo to the default position
+  oneTrueBioloid.interpolateSetup(2000);  //setup for interpolation from the current position to the positions set in setNextPose, over 2000ms
+
+
+
+     while (bioloid.interpolating > 0 || oneTrueBioloid.interpolating > 0) 
+     {
+        if(bioloid.interpolating > 0)
+        {
+           bioloid.interpolateStep();
+        }
+        if(oneTrueBioloid.interpolating > 0)
+        {
+          oneTrueBioloid.interpolateStep();//move servos 1 'step
+        }
+        delay(3);
+     }
+
+homePos();
+
+
+  
+
+  
 // MoveArmTo(512, 473, 281, 743, 512, 512, 200, true) ;
 
-MoveArmToHome();
-delay(5000);
+   // g_bIKMode = IKM_CYLINDRICAL;
+   // IKSequencingControl(507 , 415 , 463 , 0 , 512 , 256 , 5000 , 0, playState);
+delay(1000);
+  
+  MSound(3, 100, 2000, 180, 2250, 200, 2500);
   
 }//end setup
 
@@ -377,14 +413,14 @@ void updateControls()
   
     if(classy.homePressed == true)
     {
-      //do something, don't need the state button unless it is a very short action (short actions may repeat)
+      homePos();
     }
     
     if(classy.selectPressed == true)
     {
 
 
-      //do something, don't need the state button unless it is a very short action (short actions may repeat)
+      smoothIt();//do something, don't need the state button unless it is a very short action (short actions may repeat)
     }
     
     if(classy.startPressed == true)
@@ -395,9 +431,9 @@ void updateControls()
     }
     
   
-  if (classy.aPressed) {
-    rickRoll();
-    }
+//  if (classy.aPressed) {
+//    rickRoll();
+//    }
   if (classy.bPressed) {
     leftStack();
     }
@@ -407,7 +443,7 @@ void updateControls()
      //only update the base joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyXVal > DEADBANDHIGH || joyXVal < DEADBANDLOW)
      {
-       joyXMapped = mapfloat(joyXVal, WII_JOYSTICK_MAX, 0,  -spd * 5 , spd * 5); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyXMapped = mapfloat(joyXVal, WII_JOYSTICK_MAX, 0,  -spd * xspd , spd * xspd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sBase = g_sBase + joyXMapped;
 
      }
@@ -415,7 +451,7 @@ void updateControls()
      //only update the shoulder joint if the joystick is outside the deadzone (i.e. moved oustide the center position)
      if(joyYVal > DEADBANDHIGH || joyYVal < DEADBANDLOW)
      {
-       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, -2*spd, 2*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyYMapped = mapfloat(joyYVal, WII_JOYSTICK_MAX, 0, ZYspd*spd, -ZYspd*spd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sIKY = g_sIKY + joyYMapped;
      }
   
@@ -424,7 +460,7 @@ void updateControls()
      {
       
   
-       joyZMapped = mapfloat(joyZVal, WII_JOYSTICK_MAX, 0, spd*2, -spd*2); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
+       joyZMapped = mapfloat(joyZVal, WII_JOYSTICK_MAX, 0, spd*ZYspd, -spd*ZYspd); //Map analog value from native joystick value (0 to WII_JOYSTICK_MAX) to incremental change (-spd to spd)
        g_sIKZ = g_sIKZ + joyZMapped;
      }
      
@@ -445,7 +481,7 @@ void updateControls()
     
      // joint[GRIPPER] = 0;
    servo5Value = servo5Value + spdgrip;
-     //sGrip = 176;
+     sGrip = sGrip + spdgrip;
    }
 
    
@@ -454,7 +490,7 @@ void updateControls()
      // joint[GRIPPER] = 40;
  
   servo5Value = servo5Value - spdgrip;
-     //sGrip = 176;
+     sGrip = sGrip - spdgrip;
 
    }
     
@@ -463,7 +499,7 @@ void updateControls()
    if(classy.leftShoulderPressed)
    {
     
-     // joint[WRIST_ROTATE] = 802;
+     // NOT THIS ONEjoint[WRIST_ROTATE] = 802;
 
     sWristRot = 826;
    }
@@ -471,15 +507,120 @@ void updateControls()
    
    if(classy.rightShoulderPressed)
    {
-     // joint[WRIST_ROTATE] = 222;
-
-   
+     // NOT THIS ONEjoint[WRIST_ROTATE] = 222;
 
      sWristRot = 218;
-
-
-
    }
+
+//if (classy.leftDPressed == true) {
+//  leftStack(); //pre-total automation
+//  }
+
+
+ if (classy.xPressed) 
+ {
+          if (classy.leftDPressed == true  ) 
+          {
+            leftStackphase2();//second pose;
+          } 
+          if (classy.rightDPressed == true  ) 
+          {
+            rightStackphase2();//second pose;
+          }
+          if (classy.upDPressed == true  ) 
+          {
+            topStackphase2();//second pose;
+          }
+          if (classy.downDPressed == true  ) 
+          {
+            bottomStackphase2();//second pose;
+          }
+          if (classy.yPressed == true  ) 
+          {
+            sideStackphase2();//second pose;
+          }
+            if (classy.aPressed == true  ) 
+          {
+            keyboardCat();
+          }
+          xspd = 1; //make smaller to slow the base rotation when x is pressed
+          ZYspd = 1;
+          spdgrip = 1; 
+ }
+ else  
+ {
+          if (classy.leftDPressed == true  )  
+          {
+            leftStack();//pose one
+          } 
+           if (classy.rightDPressed == true  )  
+          {
+            rightStack();//pose one
+          }
+           if (classy.upDPressed == true  )  
+          {
+            topStack();//pose one
+          }
+          if (classy.downDPressed == true  )  
+          {
+            bottomStack();//pose one
+          }
+          if (classy.yPressed == true  )  
+          {
+            sideStack();//pose one
+          }
+          if (classy.aPressed) {
+            rickRoll();
+          }
+          xspd = 5;
+          ZYspd = 2;
+          spdgrip = 5; 
+ }
+
+
+
+
+  
+//  if (classy.rightDPressed == true) {
+//  rightStack();
+//  }
+
+
+
+
+// if (classy.xPressed == true) 
+// {
+//  if (classy.rightDPressed == true  ) 
+//  {
+//    rightStackphase2();//second pose;
+//  } 
+//                                           //basic if else statement for switching between phases 1 and 2 for poses
+// }
+// else
+// {
+//  if (classy.rightDPressed == true  )  
+//  {
+//    rightStack();//pose one
+//  } 
+// }
+
+
+
+
+  
+//  if (classy.upDPressed == true) {
+//  topStack();
+//  }
+
+//  if (classy.downDPressed == true) {
+//  bottomStack();
+//  }
+
+//  if (classy.yPressed == true) {
+//  sideStack();
+//  }
+
+   
 
 
 servo5Value = constrain(servo5Value, 0, 110);  //constrain the servo value to keep in between 0 and 110 for the gripper
@@ -635,31 +776,4 @@ void MSound(byte cNotes, ...)
 
 
 
-void rickRoll(){                    // this function is what actually plays the song
-  int i, duration;
-  for (i = 0; i < songLength; i++){ // step through the song arrays
-    duration = beats[i] * tempo;    // length of note/rest in ms
-    if (notes[i] == ' '){
-      delay(duration);              // then pause for a moment
-    }else{
-      tone(buzzerPin, frequency(notes[i]), duration);
-      delay(duration);              // wait for tone to finish
-    }
-    delay(tempo/10);                // brief pause between notes
-  }
-}
-//-------------frequency-----------
-int frequency(char note){           // This function is called by rickRoll()
-  int r;
-  const int numNotes = 8;           // number of notes we're storing
-  char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };    // letter notes
-  int frequencies[] = {262, 294, 330, 349, 392, 440, 494, 523}; // frequencies
-  for (r = 0; r < numNotes; r++){
-    if (names[r] == note){
-      return(frequencies[r]);       // Yes! Return the frequency
-    }
-  }
-  return(0);
-}
-//============================= you need these functions =======================================
 

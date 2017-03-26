@@ -27,7 +27,7 @@
 /* poses:
  *  PROGMEM prog_uint16_t name[ ] = {4,512,512,482,542}; // first number is # of servos
  * sequences:
- *  PROGMEM transition_t name[] = {{NULL,count},{pose_name,1000},...} 
+ *  PROGMEM transition_t_b name[] = {{NULL,count},{pose_name,1000},...} 
  */
 
 #include "A1_16.h"
@@ -42,7 +42,7 @@
 typedef struct{
     const unsigned int * pose;    // addr of pose to transition to 
     const int time;               // time for transition
-} transition_t; 
+} transition_t_b; 
 
 /** Bioloid Controller Class for mega324p/644p clients. **/
 class BOLIDE_Player
@@ -82,7 +82,7 @@ class BOLIDE_Player
      */
 
     /* Sequence Engine */
-    void playSeq( const transition_t * addr );  // load a sequence and play it from FLASH
+    void playSeq( const transition_t_b * addr );  // load a sequence and play it from FLASH
     void play();                                // keep moving forward in time
     unsigned char playing;                      // are we playing a sequence? 0=No, 1=Yes
 
@@ -91,13 +91,12 @@ class BOLIDE_Player
      *  while(bioloid.playing){
      *      bioloid.play();
      *  }
-     */
-    
-    unsigned int * pose_;                       // the current pose, updated by Step(), set out by Sync()
-
+     */  
+     unsigned int * pose_;                       // the current pose, updated by Step(), set out by Sync()
+   
     
   private:  
-    unsigned int * nextpose_;                   // the destination pose, where we put on load
+   unsigned int * nextpose_;                   // the destination pose, where we put on load
     int * speed_;                               // speeds for interpolation 
     unsigned char * id_;                        // servo id for this index
 
@@ -105,7 +104,7 @@ class BOLIDE_Player
 	unsigned int total_frame ; 					// Wei-Shun You edits: total frame between two pose
 	unsigned int frame_counter ; 				// Wei-Shun You edits: record how many frames runs
     
-    transition_t * sequence;                    // sequence we are running
+    transition_t_b * sequence;                    // sequence we are running
     int transitions;                            // how many transitions we have left to load
    
 };
